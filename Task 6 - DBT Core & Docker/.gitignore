@@ -1,0 +1,11 @@
+.envrc
+.DS_Store
+.idea/
+.venv/
+.venv-snow/
+
+# dbt artifacts
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+logs/

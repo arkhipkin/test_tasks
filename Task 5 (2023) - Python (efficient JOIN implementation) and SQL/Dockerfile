@@ -12,6 +12,10 @@ RUN pip install --upgrade pip
 # copy everything into root directory
 COPY . /
 
+# RUN python -m pip install --upgrade pip
+# COPY requirements_docker_python.txt .
+RUN pip install --upgrade --no-cache -r requirements.txt
+
 # specify work directory as root
 WORKDIR /
 

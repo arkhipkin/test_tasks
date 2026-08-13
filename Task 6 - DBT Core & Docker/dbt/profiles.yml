@@ -1,0 +1,18 @@
+config:
+  send_anonymous_usage_stats: false
+  use_colors: true
+
+anton_test_dbt:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      threads: 4
+      account: "{{ env_var('SF_ACCOUNT') }}"
+      user: "{{ env_var('DBT_TECH_USER') }}"
+      authenticator: externalbrowser
+      role: "{{ env_var('SF_ROLE') }}"
+      database: "{{ env_var('DB_DEV') }}"
+      schema: "{{ env_var('DBT_SCHEMA') }}"
+      warehouse: "{{ env_var('SF_WAREHOUSE') }}"
+      client_session_keep_alive: false
