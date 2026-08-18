@@ -1,2 +1,6 @@
 # My test tasks executions
-Here you can find out how I performed the test tasks during the interview processes.
+This repository contains information on test task executions during the interview processes.
+My CV: https://arkhipkin.github.io/cv.html
+
+BR, 
+Anton Arkhipkin
