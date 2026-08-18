@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: fct_globepay_payments
+    description: >
+      Payment fact — one row per Globepay transaction (acceptance left-joined
+      to chargeback). Incremental MERGE on IDs whose staging dw_modified_at
+      is newer than max(source_dw_modified_at). Deletions not applied.
+    columns:
+      - name: transaction_id
+        tests:
+          - unique
+          - not_null
+      - name: transaction_at
+        tests:
+          - not_null
+      - name: is_accepted
+        tests:
+          - not_null
+      - name: is_declined
+        tests:
+          - not_null
+      - name: amount_usd
+        tests:
+          - not_null
+      - name: is_missing_chargeback
+        tests:
+          - not_null
+      - name: source_dw_modified_at
+        description: >
+          greatest(acceptance, chargeback) dw_modified_at. Incremental watermark
+          (same domain as staging). Deletions not applied.
+        tests:
+          - not_null
+      - name: dw_created_at
+        tests:
+          - not_null
+      - name: dw_modified_at
+        description: Fact write time (current_timestamp on MERGE). Not the watermark.
+        tests:
+          - not_null

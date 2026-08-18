@@ -1,0 +1,21 @@
+version: 2
+
+seeds:
+  - name: globepay_acceptance_report
+    description: Raw Globepay acceptance extract (from assignment files.zip).
+    columns:
+      - name: external_ref
+        tests:
+          - unique
+          - not_null
+
+  - name: globepay_chargeback_report
+    description: Raw Globepay chargeback extract (from assignment files.zip).
+    columns:
+      - name: external_ref
+        tests:
+          - unique
+          - not_null
+          - relationships:
+              to: ref('globepay_acceptance_report')
+              field: external_ref

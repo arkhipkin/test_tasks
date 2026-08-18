@@ -1,0 +1,48 @@
+name: anton_test_dbt
+version: "1.0.0"
+config-version: 2
+profile: anton_test_dbt
+
+# flags:
+#   send_anonymous_usage_stats: false
+#   use_colors: true
+
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+model-paths: ["models"]
+test-paths: ["tests"]
+analysis-paths: ["analyses"]
+snapshot-paths: ["snapshots"]
+
+target-path: target
+clean-targets:
+  - target
+  - dbt_packages
+  - logs
+
+vars:
+    # Incremental lookback on fct_globepay_payments (calendar days).
+    # 0 = technical watermark only. Override: --vars 'backfill_days: 365'
+    backfill_days: 0
+
+# schema comes from profiles.yml → env var DBT_SCHEMA
+# do NOT set +schema here unless you also override generate_schema_name
+
+models:
+  anton_test_dbt:
+    01_staging:
+      +materialized: table
+      +tags: ["staging"]
+    02_intermediate:
+      +materialized: table
+      +tags: ["intermediate"]
+    03_marts:
+      +materialized: table
+      +tags: ["marts"]
+    04_reports:
+      +materialized: view
+      +tags: ["reports"]
+
+seeds:
+  anton_test_dbt:
+    +quote_columns: false

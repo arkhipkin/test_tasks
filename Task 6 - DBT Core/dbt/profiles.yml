@@ -1,7 +1,3 @@
-config:
-  send_anonymous_usage_stats: false
-  use_colors: true
-
 anton_test_dbt:
   target: dev
   outputs:

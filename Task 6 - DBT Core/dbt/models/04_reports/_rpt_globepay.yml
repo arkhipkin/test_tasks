@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: rpt_acceptance_rate_daily
+    description: "Q1 — daily acceptance rate (accepted / total)."
+    columns:
+      - name: transaction_date
+        tests:
+          - unique
+          - not_null
+      - name: acceptance_rate
+        tests:
+          - not_null
+      - name: dw_modified_at
+        tests:
+          - not_null
+
+  - name: rpt_declined_over_25m_usd
+    description: "Q2 — countries with declined amount_usd > 25,000,000."
+    columns:
+      - name: country_code
+        tests:
+          - unique
+          - not_null
+      - name: declined_amount_usd
+        tests:
+          - not_null
+      - name: dw_modified_at
+        tests:
+          - not_null
+
+  - name: rpt_missing_chargeback
+    description: >
+      Q3 — payments with missing chargeback data.
+      On the provided seed files this set is empty (perfect 1:1 join + non-null flags).
+    columns:
+      - name: transaction_id
+        tests:
+          - unique
+      - name: dw_modified_at
+        # may be empty relation — no not_null on empty set needed beyond query

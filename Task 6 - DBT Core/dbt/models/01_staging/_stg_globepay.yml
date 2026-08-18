@@ -1,0 +1,74 @@
+version: 2
+
+models:
+  - name: stg_globepay__acceptance_report
+    description: >
+      Cleaned Globepay acceptance report. Incremental MERGE on transaction_id;
+      record_hash = HASH(report_status, transaction_state, provider_event_id).
+      Amount treated as major currency units (CSV has decimals; API "minor units"
+      text does not match the file). amount_usd = amount / rates[currency].
+      Deletions (ID gone from seed) are not applied.
+    columns:
+      - name: transaction_id
+        description: Globepay external_ref — primary payment key
+        tests:
+          - unique
+          - not_null
+      - name: report_status
+        tests:
+          - not_null
+      - name: transaction_at
+        tests:
+          - not_null
+      - name: transaction_state
+        tests:
+          - not_null
+          - accepted_values:
+              values: ["ACCEPTED", "DECLINED"]
+      - name: is_cvv_provided
+        tests:
+          - not_null
+      - name: amount_usd
+        tests:
+          - not_null
+      - name: record_hash
+        tests:
+          - not_null
+      - name: dw_created_at
+        tests:
+          - not_null
+      - name: dw_modified_at
+        description: >
+          Bumped when record_hash changes or the ID is new.
+          Unchanged hash keeps the previous value. Deletions not applied.
+        tests:
+          - not_null
+
+  - name: stg_globepay__chargeback_report
+    description: >
+      Cleaned Globepay chargeback report. Incremental MERGE on transaction_id;
+      record_hash = HASH(report_status, has_chargeback).
+      Deletions (ID gone from seed) are not applied.
+    columns:
+      - name: transaction_id
+        tests:
+          - unique
+          - not_null
+      - name: report_status
+        tests:
+          - not_null
+      - name: has_chargeback
+        tests:
+          - not_null
+      - name: record_hash
+        tests:
+          - not_null
+      - name: dw_created_at
+        tests:
+          - not_null
+      - name: dw_modified_at
+        description: >
+          Bumped when record_hash changes or the ID is new.
+          Unchanged hash keeps the previous value. Deletions not applied.
+        tests:
+          - not_null
